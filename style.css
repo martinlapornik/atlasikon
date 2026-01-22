@@ -1,0 +1,261 @@
+/* 1. Basis-Setup & Karte */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    /* Ein schönes Mapbox-Blau oder ein dunkles Grau, passend zum Weltraum/Ozean */
+    background-color: #aad3df; 
+}
+
+/* 2. Such-Container (Absolut über der Karte) */
+#search-container {
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    z-index: 1000; /* Muss über der Karte sein */
+    width: 250px;  /* Begrenzt die Breite auf 250px */
+}
+
+/* Wrapper für Input + X */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Das Eingabefeld */
+#country-search {
+    width: 100%;
+    padding: 10px 35px 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    outline: none;
+    background: white;
+}
+
+/* Ecken eckig machen, wenn Vorschläge da sind */
+#country-search.has-suggestions {
+    border-radius: 5px 5px 0 0;
+}
+
+/* 3. Das Löschen-X */
+#clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #999;
+    display: none;
+    z-index: 1001;
+}
+
+#clear-search:hover {
+    color: #333;
+}
+
+/* 4. Die Vorschlagsliste */
+.suggestions-list {
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover, .suggestion-active {
+    background-color: #f0f0f0 !important;
+    color: #000;
+}
+
+/* 5. Popups & Animationen */
+.leaflet-interactive {
+    transition: fill-opacity 0.3s ease, stroke 0.3s ease;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #ffffff;
+    color: #333;
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.leaflet-popup-tip { background: #ffffff; }
+
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 15px;
+}
+
+.leaflet-popup-content img {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    margin-bottom: 8px;
+}
+/* Einheitlicher Stil für alle Karten-Buttons */
+#home-button {
+    position: absolute;
+    top: 80px; /* Unter Zoom + und - */
+    left: 10px;
+    z-index: 1000;
+    width: 30px; /* Leaflet Standardmaß */
+    height: 30px;
+    background-color: #ffffff;
+    border: 2px solid rgba(0,0,0,0.2);
+    background-clip: padding-box;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444; /* Anthrazit statt Schwarz wirkt edler */
+    transition: all 0.2s ease;
+}
+
+#home-button i {
+    font-size: 14px;
+}
+#fullscreen-button {
+    position: absolute;
+    top: 115px; /* Unter den Home-Button */
+    left: 10px;
+    z-index: 1000;
+    width: 30px;
+    height: 30px;
+    background: white;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+}
+#home-button:hover {
+    background-color: #f8f9fa;
+    color: #007bff; /* Ein dezentes Blau beim Drüberfahren */
+    border-color: rgba(0,0,0,0.3);
+}
+
+/* Optional: Die Standard-Zoom-Buttons von Leaflet anpassen, 
+   damit sie zum neuen Home-Button passen */
+.leaflet-bar a {
+    background-color: #fff !important;
+    border-bottom: 1px solid #ccc !important;
+    color: #444 !important;
+    transition: all 0.2s ease;
+}
+
+.leaflet-bar a:hover {
+    color: #007bff !important;
+}
+
+/* Macht den Flash-Effekt beim Entfernen geschmeidig */
+.leaflet-overlay-pane svg path {
+    transition: opacity 0.5s ease-out;
+}
+/* --- MOBILE OPTIMIERUNG --- */
+@media (max-width: 600px) {
+    /* 1. Suchfeld schmaler machen */
+    #search-container {
+        left: 10px;
+        top: 10px;
+        width: 180px; /* Deutlich schmaler auf dem Handy */
+    }
+
+    #country-search {
+        font-size: 16px; /* Wichtig: Verhindert automatisches Zoomen bei iPhones */
+        padding: 8px;
+    }
+
+    /* 2. Buttons nach unten schieben oder verkleinern */
+    #home-button {
+        top: auto;
+        bottom: 80px; /* Wandert nach links unten */
+        left: 10px;
+    }
+
+    #fullscreen-button {
+        top: auto;
+        bottom: 40px; /* Direkt über dem Home-Button unten links */
+        left: 10px;
+    }
+
+    /* 3. Standard-Leaflet-Zoom-Buttons ausblenden */
+    /* Auf dem Handy nutzt man meistens "Pinch-to-Zoom" mit den Fingern */
+    .leaflet-control-zoom {
+        display: none !important;
+    }
+
+    /* 4. Layer-Menü (oben rechts) etwas kompakter */
+    .leaflet-control-layers {
+        margin-top: 10px !important;
+        margin-right: 10px !important;
+    }
+}
+@media (max-width: 600px) {
+    .leaflet-popup-content {
+        width: 140px !important; /* Begrenzt die Breite, damit es nicht über den Rand geht */
+        margin: 10px;
+    }
+    
+    .leaflet-popup-content img {
+        width: 60px !important; /* Flagge etwas kleiner */
+    }
+}
+#legal-links {
+    position: absolute;
+    bottom: 10px;
+    left: 50px; /* Lässt Platz für die Buttons am linken Rand */
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.7); /* Leicht transparent */
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    font-size: 11px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+#legal-links a {
+    color: #555;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+#legal-links a:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+/* Optimierung für Mobile */
+@media (max-width: 600px) {
+    #legal-links {
+        left: 50px; /* Bleibt links, aber wir müssen auf die Button-Höhe achten */
+        bottom: 45px; /* Etwas höher, damit es nicht direkt auf dem Rand klebt */
+        font-size: 10px;
+    }
+}

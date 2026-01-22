@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>World Map MVP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+
+<div id="search-container">
+    <div class="input-wrapper">
+        <input type="text" id="country-search" placeholder="Land suchen..." autocomplete="off">
+        <span id="clear-search">&times;</span>
+    </div>
+    <div id="suggestions" class="suggestions-list"></div>
+</div>
+
+<button id="home-button" title="Zurück zur Weltansicht">
+    <i class="fas fa-house"></i>
+</button>
+
+<button id="fullscreen-button" title="Vollbildmodus">
+    <i class="fas fa-expand"></i>
+</button>
+
+<div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script src="script.js"></script>
+<footer id="legal-links">
+    <a href="impressum.html" target="_blank">Impressum</a>
+    <a href="datenschutz.html" target="_blank">Datenschutz</a>
+</footer>
+
+<div id="legal-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modal-text"></div>
+    </div>
+</div>
+</body>
+</html>
